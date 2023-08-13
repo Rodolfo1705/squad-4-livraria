@@ -5,6 +5,9 @@
  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
     <persistence-unit name="livrariavirtual" transaction-type="RESOURCE_LOCAL">
         <class>livraria.LivrariaVirtual</class>
+        <class>livraria.Livro</class>
+        <class>livraria.Impresso</class>
+        <class>livraria.Eletronico</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url"
@@ -15,6 +18,11 @@
             <property name="hibernate.hbm2ddl.auto" value="update" />
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
+
+            <!-- Configuração da estratégia de tabela única (single table) -->
+            <property name="hibernate.discriminator.column" value="tipo_livro" />
+            <property name="hibernate.discriminator.value-1" value="impresso" />
+            <property name="hibernate.discriminator.value-2" value="eletronico" />
         </properties>
     </persistence-unit>
 </persistence>

@@ -1,5 +1,6 @@
 package livraria;
 
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 

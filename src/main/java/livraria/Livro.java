@@ -1,18 +1,34 @@
 package livraria;
 
+import javax.persistence.*;
 import java.util.List;
 
-public abstract class Livro {
+@Entity
+@Table(name = "livro")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_livro", discriminatorType = DiscriminatorType.STRING)
+public class Livro {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private int cod;
     private String titulo;
-    private List<String> autores;
+    private String autores;
     private String editora;
     private float preco;
+
+    public Livro(){}
+    public Livro(String titulo, String autores, String editora, float preco) {
+        this.titulo = titulo;
+        this.autores = autores;
+        this.editora = editora;
+        this.preco = preco;
+    }
 
     public String getTitulo() {
         return titulo;
     }
 
-    public List<String> getAutores() {
+    public String getAutores() {
         return autores;
     }
 
@@ -28,7 +44,7 @@ public abstract class Livro {
         this.titulo = titulo;
     }
 
-    public void setAutores(List<String> autores) {
+    public void setAutores(String autores) {
         this.autores = autores;
     }
 
@@ -42,11 +58,6 @@ public abstract class Livro {
 
     @Override
     public String toString() {
-        return "Livro{" +
-                "titulo='" + titulo + '\'' +
-                ", autores='" + autores + '\'' +
-                ", editora='" + editora + '\'' +
-                ", preco=" + preco +
-                '}';
+        return "Livro: \nTítulo: " + titulo + "\nAutores: " + autores + "\nEditora: " + editora + "\nPreço=" + preco;
     }
 }

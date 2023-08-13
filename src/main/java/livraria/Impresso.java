@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("impresso")
+@DiscriminatorValue("Impresso")
 public class Impresso extends Livro{
     private float frete;
     private int estoque;
@@ -24,6 +24,14 @@ public class Impresso extends Livro{
 
     public void atualizarEstoque(){
         this.estoque -= 1;
+    }
+
+    public float getFrete() {
+        return frete;
+    }
+
+    public int getEstoque() {
+        return estoque;
     }
 
     @Override

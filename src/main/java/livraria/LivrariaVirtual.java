@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -123,31 +124,79 @@ public class LivrariaVirtual {
         List<Impresso> livrosImpressos;
         List<Eletronico> livrosEletronicos;
         for (int i = 1; i <= quantidade; i++){
-            tipo = InputHandler.getIntInput("Qual o tipo do " + i +"º livro: (1 - Impresso | 2 - Eletronico)\n");
+            tipo = InputHandler.getIntInput("Qual o tipo do " + i +"º livro: (1 - Impresso | 2 - Eletrônico)\n");
             //mostrar lista e esolher livro
         }
     }
 
     public void listarLivrosImpressos(){
-
-    }
-
-    public void listarLivrosELetronicos(){
-
-    }
-
-    public void listarLivros(){
-        System.out.println("---- Lista de Livros ----");
-
         EntityManager entityManager = Instance.getEntityManager();
         entityManager.getTransaction().begin();
 
-        entityManager.createQuery("SELECT l FROM Livro l", Livro.class)
-                .getResultList()
-                .forEach(impresso -> System.out.println("Título: " + impresso.getTitulo() + "\nNome: " + impresso.getAutores() + "\nEditora: " + impresso.getEditora() + "\nPreço: " + impresso.getPreco() + "\nEstoque"));
+        System.out.println("\n---- Lista de Livros Impressos ----\n");
+        List<Impresso> livrosImpressos = entityManager.createQuery("SELECT i FROM Impresso i", Impresso.class)
+                .getResultList();
 
+        for (Impresso livro : livrosImpressos) {
+            System.out.println("Código: " + livro.getCod() +
+                    "\nTítulo: " + livro.getTitulo() +
+                    "\nAutores: " + livro.getAutores() +
+                    "\nEditora: " + livro.getEditora() +
+                    "\nPreço: R$" + livro.getPreco() +
+                    "\nEstoque: " + livro.getEstoque() + " unidades" +
+                    "\nFrete: R$" + livro.getFrete() + "\n");
+        }
         entityManager.close();
-        Instance.closeEntityManagerFactory();
+    }
+
+    public void listarLivrosELetronicos(){
+        EntityManager entityManager = Instance.getEntityManager();
+        entityManager.getTransaction().begin();
+
+        System.out.println("\n---- Lista de Livros Eletrônicos ----\n");
+        List<Eletronico> livrosEletronicos = entityManager.createQuery("SELECT i FROM Eletronico i", Eletronico.class)
+                .getResultList();
+
+        for (Eletronico livro : livrosEletronicos) {
+            System.out.println("Código: " + livro.getCod() +
+                    "\nTítulo: " + livro.getTitulo() +
+                    "\nAutores: " + livro.getAutores() +
+                    "\nEditora: " + livro.getEditora() +
+                    "\nPreço: R$" + livro.getPreco() +
+                    "\nTamanho: " + livro.getTamanho() + "KB\n");
+        }
+        entityManager.close();
+    }
+
+    public void listarLivros(){
+        EntityManager entityManager = Instance.getEntityManager();
+        entityManager.getTransaction().begin();
+
+        System.out.println("\n---- Lista de Livros ----\n");
+        List<Livro> livros = entityManager.createQuery("SELECT l FROM Livro l", Livro.class)
+                .getResultList();
+
+        livros.sort(Comparator.comparing(Livro::getTitulo));
+        for (Livro livro : livros) {
+            System.out.println("Título: " + livro.getTitulo() +
+                    "\nAutores: " + livro.getAutores() +
+                    "\nEditora: " + livro.getEditora() +
+                    "\nPreço: R$" + livro.getPreco());
+
+            if (livro instanceof Impresso) {
+                Impresso impresso = (Impresso) livro;
+                System.out.println("Tipo: Impresso" +
+                        "\nEstoque: " + impresso.getEstoque() +
+                        "\nFrete: R$" + impresso.getFrete());
+            } else if (livro instanceof Eletronico) {
+                Eletronico eletronico = (Eletronico) livro;
+                System.out.println("Tipo: Eletrônico" +
+                        "\nTamanho: " + eletronico.getTamanho() + "KB");
+            }
+
+            System.out.println();
+        }
+        entityManager.close();
     }
 
     public void listarVendas(){}

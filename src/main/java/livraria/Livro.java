@@ -24,6 +24,10 @@ public class Livro {
         this.preco = preco;
     }
 
+    public int getCod() {
+        return cod;
+    }
+
     public String getTitulo() {
         return titulo;
     }

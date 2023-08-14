@@ -27,6 +27,6 @@ public class InputHandler {
     }
 
     public static void limparBuffer(){
-        scanner.next();
+        scanner.nextLine();
     }
 }

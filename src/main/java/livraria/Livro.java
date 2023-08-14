@@ -3,10 +3,10 @@ package livraria;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "livro")
+@Table(name = "livros")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_livro", discriminatorType = DiscriminatorType.STRING)
-public class Livro {
+public abstract class Livro {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int cod;
